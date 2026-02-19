@@ -1,0 +1,8 @@
+artifact_location: mlflow-artifacts:/212105112104708898
+creation_time: 1771140429716
+experiment_id: '212105112104708898'
+last_update_time: 1771147736892
+lifecycle_stage: deleted
+name: travel-search-rag
+tags:
+  mlflow.experimentKind: genai_development

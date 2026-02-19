@@ -1,0 +1,14 @@
+artifact_uri: mlflow-artifacts:/318402448263464363/55789dcf42ff453c85cd9932373dfa1e/artifacts
+end_time: 1771215894003
+entry_point_name: ''
+experiment_id: '318402448263464363'
+lifecycle_stage: active
+run_id: 55789dcf42ff453c85cd9932373dfa1e
+run_name: search_travel_info
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1771215892194
+status: 3
+tags: []
+user_id: alka
