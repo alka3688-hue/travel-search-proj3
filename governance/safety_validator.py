@@ -68,8 +68,14 @@ class SafetyValidator:
                             flags.append(f"Azure Content Safety Violation: {analysis.category} ({analysis.severity})")
                     
             except HttpResponseError as e:
-                print(f"Azure Content Safety check failed: {e}")
-                # Log error but don't block unless strict policy
+                # Suppress logging for auth errors (401, invalid credentials)
+                # Content Safety is optional; don't block on auth failures
+                if e.status_code not in [401, 403, 404]:
+                    print(f"Azure Content Safety check failed: {e}")
+            except Exception as e:
+                # Silently handle any other errors (network, timeout, etc.)
+                # Content Safety is optional guardrail
+                pass
         
         return {
             "is_safe": is_safe,

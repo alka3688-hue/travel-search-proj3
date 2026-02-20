@@ -3,6 +3,7 @@ Ragas Evaluation for Travel Chatbot
 Evaluates faithfulness, answer relevancy, context precision, and context recall
 """
 import os
+import sys
 import json
 import logging
 import asyncio
@@ -11,8 +12,17 @@ from pathlib import Path
 from typing import List, Dict
 
 from ragas import evaluate
-from ragas.metrics import faithfulness, answer_relevancy, context_precision, context_recall
+from ragas.metrics import (
+    Faithfulness,
+    AnswerRelevancy,
+    ContextPrecision,
+    ContextRecall
+)
 from datasets import Dataset
+
+ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+if ROOT not in sys.path:
+    sys.path.insert(0, ROOT)
 
 from src.search_engine import TravelSearchEngine
 from src.config import Config
@@ -154,7 +164,7 @@ class TravelChatbotEvaluator:
         
         # Extract questions and ground truths
         questions = [item["question"] for item in golden_data]
-        ground_truths = [[item["ground_truth"]] for item in golden_data]  # Ragas expects list of strings
+        ground_truths = [item["ground_truth"] for item in golden_data]  # Ragas expects string, not list
         expected_sources = [item.get("source", "Unknown") for item in golden_data]
         expected_categories = [item.get("category", "unknown") for item in golden_data]
         
@@ -181,10 +191,10 @@ class TravelChatbotEvaluator:
             results = evaluate(
                 hf_dataset,
                 metrics=[
-                    faithfulness,
-                    answer_relevancy,
-                    context_precision,
-                    context_recall
+                    Faithfulness(),
+                    AnswerRelevancy(),
+                    ContextPrecision(),
+                    ContextRecall()
                 ],
             )
             
@@ -334,6 +344,5 @@ def run_evaluation():
 
 
 if __name__ == "__main__":
-    import sys
     exit_code = run_evaluation()
     sys.exit(exit_code)
